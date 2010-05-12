@@ -1,5 +1,5 @@
 ---
-abstract: 'The great new Net::Dropbox!'
+abstract: ~
 author:
   - 'Lenz Gschwendtner <norbu09@cpan.org>'
 build_requires:
@@ -13,7 +13,7 @@ license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
-name: Net-Dropbox
+name: Net-Dropbox-API
 no_index:
   directory:
     - inc
@@ -28,4 +28,4 @@ requires:
   common::sense: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.01
+version: 0.02
