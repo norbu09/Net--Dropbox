@@ -10,32 +10,32 @@ use Data::Random qw(rand_chars);
 
 =head1 NAME
 
-Net::Dropbox - The great new Net::Dropbox!
+Net::Dropbox::API - A dropbox API interface
 
 =head1 VERSION
 
-Version 0.3
+Version 0.4
 
 =cut
 
-our $VERSION = '0.3';
+our $VERSION = '0.4';
 
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+The Dropbox API is a OAuth based API. I try to abstract as much away as
+possible so you should not need to know too much about it.
+This is how it works:
 
-Perhaps a little code snippet.
+    use Net::Dropbox::API;
 
-    use Net::Dropbox;
+    my $box = Net::Dropbox::API->new({key => 'KEY', secret => 'SECRET'});
+    my $login_link = $box->login; # user needs to klick this link and login
+    $box->auth;                   # oauth keys get exchanged
+    my $info = $box->info;        # and here we have our account info
 
-    my $foo = Net::Dropbox->new();
-    ...
-
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+See the examples for a working Mojolicious web client using the Dropbox
+API.
 
 =head1 FUNCTIONS
 
@@ -147,7 +147,7 @@ lists all files in the path defined.
 =cut
 sub list {
     my $self = shift;
-    my $path = shift;
+    my $path = shift || '';
 
     return from_json($self->_talk('files/'.$self->context.'/'.$path));
 }
@@ -217,7 +217,7 @@ creates a cookie protected link for the user to look at.
 =cut
 sub metadata {
     my $self = shift;
-    my ($path) = @_;
+    my $path = shift || '';
 
     return from_json($self->_talk('metadata/'.$self->context.'/'.$path));
 }
@@ -276,8 +276,8 @@ Lenz Gschwendtner, C<< <norbu09 at cpan.org> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-net-dropbox at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Net-Dropbox>.  I will be notified, and then you'll
+Please report any bugs or feature requests to C<bug-net-dropbox-api at rt.cpan.org>, or through
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Net-Dropbox-API>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 
@@ -287,7 +287,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc Net::Dropbox
+    perldoc Net::Dropbox::API
 
 
 You can also look for information at:
@@ -296,24 +296,21 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Net-Dropbox>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Net-Dropbox-API>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/Net-Dropbox>
+L<http://annocpan.org/dist/Net-Dropbox-API>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/Net-Dropbox>
+L<http://cpanratings.perl.org/d/Net-Dropbox-API>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/Net-Dropbox/>
+L<http://search.cpan.org/dist/Net-Dropbox-API/>
 
 =back
-
-
-=head1 ACKNOWLEDGEMENTS
 
 
 =head1 COPYRIGHT & LICENSE
