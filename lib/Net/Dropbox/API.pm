@@ -14,11 +14,11 @@ Net::Dropbox - The great new Net::Dropbox!
 
 =head1 VERSION
 
-Version 0.02
+Version 0.3
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.3';
 
 
 =head1 SYNOPSIS
@@ -52,6 +52,7 @@ has 'request_token' => (is => 'rw', isa => 'Str');
 has 'request_secret' => (is => 'rw', isa => 'Str');
 has 'access_token' => (is => 'rw', isa => 'Str');
 has 'access_secret' => (is => 'rw', isa => 'Str');
+has 'context' => (is => 'rw', isa => 'Str', default => 'sandbox');
 
 =head2 login
 This sets up the initial OAuth handshake and returns the login URL. This
@@ -61,7 +62,6 @@ Dropbox then redirects back to the callback URL defined with
 $self->callback_url. If the user already accepted the application the
 redirect may happen without the user actually clicking anywhere.
 =cut
-
 sub login {
     my $self = shift;
 
@@ -100,7 +100,6 @@ The auth method changes the initial request token into access token that we need
 for subsequent access to the API. This method only has to be called once
 after login.
 =cut
-
 sub auth {
     my $self = shift;
 
@@ -137,27 +136,91 @@ sub auth {
 =head2 account_info
 account_info polls the users info from dropbox.
 =cut
-
 sub account_info {
     my $self = shift;
 
     return from_json($self->_talk('account/info'));
 }
 
-=head2 list_files
-lists all files un the path defined.
-Paths starting with 'dropbox/' refer to the users dropbox and paths
-starting with 'sandbox/' refer to the sandbox directory the user asigned
-to the application.
+=head2 list
+lists all files in the path defined.
 =cut
-sub list_files {
+sub list {
     my $self = shift;
     my $path = shift;
 
-    return from_json($self->_talk('files/'.$path));
+    return from_json($self->_talk('files/'.$self->context.'/'.$path));
 }
 
+=head2 copy
+copies a folder
+    copy($from, $to)
+=cut
+sub copy {
+    my $self = shift;
+    my ($from, $to) = @_;
 
+    my $opts = 'from_path='.$from.'&to_path='.$to.'&root='.$self->context;
+    return from_json($self->_talk('fileops/copy?'.$opts));
+}
+
+=head2 move
+move a folder
+    move($from, $to)
+=cut
+sub move {
+    my $self = shift;
+    my ($from, $to) = @_;
+
+    my $opts = 'from_path='.$from.'&to_path='.$to.'&root='.$self->context;
+    return from_json($self->_talk('fileops/move?'.$opts));
+}
+
+=head2 mkdir
+creates a folder
+    mkdir($path)
+=cut
+sub mkdir {
+    my $self = shift;
+    my ($path) = @_;
+
+    my $opts = 'path='.$path.'&root='.$self->context;
+    return from_json($self->_talk('fileops/create_folder?'.$opts));
+}
+
+=head2 delete
+delete a folder
+    delete($path)
+=cut
+sub delete {
+    my $self = shift;
+    my ($path) = @_;
+
+    my $opts = 'path='.$path.'&root='.$self->context;
+    return from_json($self->_talk('fileops/delete?'.$opts));
+}
+
+=head2 view
+creates a cookie protected link for the user to look at.
+    view($path)
+=cut
+sub view {
+    my $self = shift;
+    my ($path) = @_;
+
+    return from_json($self->_talk('fileops/links/'.$self->context.'/'.$path));
+}
+
+=head2 metadata
+creates a cookie protected link for the user to look at.
+    metadata($path)
+=cut
+sub metadata {
+    my $self = shift;
+    my ($path) = @_;
+
+    return from_json($self->_talk('metadata/'.$self->context.'/'.$path));
+}
 
 =head1 INTERNAL API
 =head2 _talk
