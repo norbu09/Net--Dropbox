@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+0.4     2010-05-12T17:17:16
+        cleanup, documentation and full base API implementation
+
 0.01    2010-05-12T13:45:17
         First version, released on an unsuspecting world.
 
