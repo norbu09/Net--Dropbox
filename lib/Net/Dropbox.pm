@@ -1,6 +1,7 @@
 package Net::Dropbox;
 
 use common::sense;
+use JSON;
 use Mouse;
 use Net::OAuth;
 use LWP::UserAgent;
@@ -38,8 +39,6 @@ if you don't export anything, such as for a purely object-oriented module.
 
 =head1 FUNCTIONS
 
-=head2 login
-
 =cut
 
 has 'debug' => (is => 'rw', isa => 'Bool', default => 0);
@@ -54,9 +53,18 @@ has 'request_secret' => (is => 'rw', isa => 'Str');
 has 'access_token' => (is => 'rw', isa => 'Str');
 has 'access_secret' => (is => 'rw', isa => 'Str');
 
-sub login_url {
+=head2 login
+This sets up the initial OAuth handshake and returns the login URL. This
+URL has to be clicked by the user and the the user then has to accept
+the application in dropbox. 
+Dropbox then redirects back to the callback URL defined with
+$self->callback_url. If the user already accepted the application the
+redirect may happen without the user actually clicking anywhere.
+=cut
+
+sub login {
     my $self = shift;
-    #$Net::OAuth::PROTOCOL_VERSION = Net::OAuth::PROTOCOL_VERSION_1_0A;
+
     my $ua = LWP::UserAgent->new;
 
     my $request = Net::OAuth->request("request token")->new(
@@ -68,15 +76,10 @@ sub login_url {
         timestamp => time,
         nonce => $self->nonce,
         callback => $self->callback_url,
-        #extra_params => {
-        #    apple => 'banana',
-        #    kiwi => 'pear',
-        #}
     );
 
     $request->sign;
-
-    my $res = $ua->request(GET $request->to_url); # Post message to the Service Provider
+    my $res = $ua->request(GET $request->to_url);
 
     if ($res->is_success) {
         my $response = Net::OAuth->response('request token')->from_post_body($res->content);
@@ -87,9 +90,16 @@ sub login_url {
         return 'http://api.dropbox.com/0/oauth/authorize?oauth_token='.$response->token.'&oauth_callback='.$self->callback_url;
     }
     else {
+        $self->error($res->status_line);
         warn "Something went wrong: ".$res->status_line;
     }
 }
+
+=head2 auth
+The auth method changes the initial request token into access token that we need
+for subsequent access to the API. This method only has to be called once
+after login.
+=cut
 
 sub auth {
     my $self = shift;
@@ -106,15 +116,10 @@ sub auth {
         callback => $self->callback_url,
         token => $self->request_token,
         token_secret => $self->request_secret,
-        #extra_params => {
-        #    apple => 'banana',
-        #    kiwi => 'pear',
-        #}
     );
 
     $request->sign;
-
-    my $res = $ua->request(GET $request->to_url); # Post message to the Service Provider
+    my $res = $ua->request(GET $request->to_url);
 
     if ($res->is_success) {
         my $response = Net::OAuth->response('access token')->from_post_body($res->content);
@@ -124,15 +129,41 @@ sub auth {
         print "Got Access Token Secret ", $response->token_secret, "\n" if $self->debug;
     }
     else {
+        $self->error($res->status_line);
         warn "Something went wrong: ".$res->status_line;
     }
 }
 
+=head2 account_info
+account_info polls the users info from dropbox.
+=cut
+
 sub account_info {
     my $self = shift;
 
-    return $self->_talk('account/info');
+    return from_json($self->_talk('account/info'));
 }
+
+=head2 list_files
+lists all files un the path defined.
+Paths starting with 'dropbox/' refer to the users dropbox and paths
+starting with 'sandbox/' refer to the sandbox directory the user asigned
+to the application.
+=cut
+sub list_files {
+    my $self = shift;
+    my $path = shift;
+
+    return from_json($self->_talk('files/'.$path));
+}
+
+
+
+=head1 INTERNAL API
+=head2 _talk
+_talk handles the access to the restricted resources. You should
+normally not need to access this directly.
+=cut
 
 sub _talk {
     my $self = shift;
@@ -151,19 +182,15 @@ sub _talk {
         #callback => $self->callback_url,
         token => $self->access_token,
         token_secret => $self->access_secret,
-        #extra_params => {
-        #    apple => 'banana',
-        #    kiwi => 'pear',
-        #}
     );
 
     $request->sign;
 
     my $res;
     if($method =~ /get/i){
-        $res = $ua->get($request->to_url); # Post message to the Service Provider
+        $res = $ua->get($request->to_url);
     } else {
-        $res = $ua->post($request->to_url); # Post message to the Service Provider
+        $res = $ua->post($request->to_url);
     }
 
     if ($res->is_success) {
@@ -179,9 +206,6 @@ sub _talk {
 =head2 talk
 
 =cut
-
-sub talk {
-}
 
 =head1 AUTHOR
 

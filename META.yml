@@ -21,6 +21,7 @@ no_index:
 requires:
   Data::Random: 0
   HTTP::Request::Common: 0
+  JSON: 0
   LWP::UserAgent: 0
   Mouse: 0
   Net::OAuth: 0

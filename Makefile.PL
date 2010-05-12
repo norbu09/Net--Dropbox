@@ -7,6 +7,7 @@ license  'perl';
 
 build_requires 'Test::More';
 
+requires 'JSON';
 requires 'Mouse';
 requires 'Net::OAuth';
 requires 'common::sense';
