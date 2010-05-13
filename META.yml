@@ -29,4 +29,4 @@ requires:
   common::sense: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.5
+version: 0.6

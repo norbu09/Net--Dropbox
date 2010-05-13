@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+0.6     2010-05-13T13:42:31
+        clean up tests referencing Net::Dropbox since i... [perigrin]
+
 0.5     2010-05-13T13:25:10
         clean up POD formatting [perigrin]
 
