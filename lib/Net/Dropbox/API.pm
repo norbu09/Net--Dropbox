@@ -55,13 +55,17 @@ has 'access_secret' => (is => 'rw', isa => 'Str');
 has 'context' => (is => 'rw', isa => 'Str', default => 'sandbox');
 
 =head2 login
+
 This sets up the initial OAuth handshake and returns the login URL. This
 URL has to be clicked by the user and the the user then has to accept
 the application in dropbox. 
+
 Dropbox then redirects back to the callback URL defined with
-$self->callback_url. If the user already accepted the application the
+C<$self-E<gt>callback_url>. If the user already accepted the application the
 redirect may happen without the user actually clicking anywhere.
+
 =cut
+
 sub login {
     my $self = shift;
 
@@ -96,10 +100,13 @@ sub login {
 }
 
 =head2 auth
+
 The auth method changes the initial request token into access token that we need
 for subsequent access to the API. This method only has to be called once
 after login.
+
 =cut
+
 sub auth {
     my $self = shift;
 
@@ -134,8 +141,11 @@ sub auth {
 }
 
 =head2 account_info
+
 account_info polls the users info from dropbox.
+
 =cut
+
 sub account_info {
     my $self = shift;
 
@@ -143,8 +153,11 @@ sub account_info {
 }
 
 =head2 list
+
 lists all files in the path defined.
+
 =cut
+
 sub list {
     my $self = shift;
     my $path = shift || '';
@@ -153,9 +166,12 @@ sub list {
 }
 
 =head2 copy
+
 copies a folder
     copy($from, $to)
+
 =cut
+
 sub copy {
     my $self = shift;
     my ($from, $to) = @_;
@@ -165,9 +181,12 @@ sub copy {
 }
 
 =head2 move
+
 move a folder
     move($from, $to)
+
 =cut
+
 sub move {
     my $self = shift;
     my ($from, $to) = @_;
@@ -177,9 +196,12 @@ sub move {
 }
 
 =head2 mkdir
+
 creates a folder
     mkdir($path)
+
 =cut
+
 sub mkdir {
     my $self = shift;
     my ($path) = @_;
@@ -189,9 +211,12 @@ sub mkdir {
 }
 
 =head2 delete
+
 delete a folder
     delete($path)
+
 =cut
+
 sub delete {
     my $self = shift;
     my ($path) = @_;
@@ -201,9 +226,12 @@ sub delete {
 }
 
 =head2 view
+
 creates a cookie protected link for the user to look at.
     view($path)
+
 =cut
+
 sub view {
     my $self = shift;
     my ($path) = @_;
@@ -212,9 +240,12 @@ sub view {
 }
 
 =head2 metadata
+
 creates a cookie protected link for the user to look at.
     metadata($path)
+
 =cut
+
 sub metadata {
     my $self = shift;
     my $path = shift || '';
@@ -223,9 +254,12 @@ sub metadata {
 }
 
 =head1 INTERNAL API
+
 =head2 _talk
+
 _talk handles the access to the restricted resources. You should
 normally not need to access this directly.
+
 =cut
 
 sub _talk {
@@ -266,6 +300,7 @@ sub _talk {
     }
     return;
 }
+
 =head2 talk
 
 =cut
@@ -280,15 +315,11 @@ Please report any bugs or feature requests to C<bug-net-dropbox-api at rt.cpan.o
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Net-Dropbox-API>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
-
-
-
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
     perldoc Net::Dropbox::API
-
 
 You can also look for information at:
 
