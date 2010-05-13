@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+0.5     2010-05-13T13:25:10
+        clean up POD formatting [perigrin]
+
 0.4     2010-05-12T17:17:16
         cleanup, documentation and full base API implementation
 
