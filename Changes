@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+0.7     2010-09-30T11:27:03
+        fixed the SYNOPSIS (thanks to s.aska.org)
+
 0.6     2010-05-13T13:42:31
         clean up tests referencing Net::Dropbox since i... [perigrin]
 

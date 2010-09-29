@@ -1,13 +1,14 @@
 blib*
 Makefile
 Makefile.old
+MANIFEST.SKIP
 Build
 _build*
 pm_to_blib*
 *.tar.gz
 .lwpcookies
-Net-Server-Framework-*
-cover_db
 .vimbk
 *.swp
 *.swo
+.shipit
+bin/dropbox

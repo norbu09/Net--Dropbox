@@ -14,11 +14,11 @@ Net::Dropbox::API - A dropbox API interface
 
 =head1 VERSION
 
-Version 0.6
+Version 0.7.7.7.7.6
 
 =cut
 
-our $VERSION = '0.6';
+our $VERSION = '0.7';
 
 
 =head1 SYNOPSIS
@@ -30,9 +30,9 @@ This is how it works:
     use Net::Dropbox::API;
 
     my $box = Net::Dropbox::API->new({key => 'KEY', secret => 'SECRET'});
-    my $login_link = $box->login; # user needs to klick this link and login
-    $box->auth;                   # oauth keys get exchanged
-    my $info = $box->info;        # and here we have our account info
+    my $login_link = $box->login;  # user needs to klick this link and login
+    $box->auth;                    # oauth keys get exchanged
+    my $info = $box->account_info; # and here we have our account info
 
 See the examples for a working Mojolicious web client using the Dropbox
 API.
