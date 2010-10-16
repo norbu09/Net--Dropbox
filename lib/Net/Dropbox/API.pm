@@ -1,6 +1,7 @@
 package Net::Dropbox::API;
 
 use common::sense;
+use File::Basename qw(basename);
 use JSON;
 use Mouse;
 use Net::OAuth;
@@ -14,11 +15,11 @@ Net::Dropbox::API - A dropbox API interface
 
 =head1 VERSION
 
-Version 0.7.7.7.7.6
+Version 0.8
 
 =cut
 
-our $VERSION = '0.7';
+our $VERSION = '0.8';
 
 
 =head1 SYNOPSIS
@@ -253,6 +254,30 @@ sub metadata {
     return from_json($self->_talk('metadata/'.$self->context.'/'.$path));
 }
 
+=head2 putfile
+
+uploads a file to dropbox
+
+=cut
+
+sub putfile {
+    my $self     = shift;
+    my $file     = shift;
+    my $path     = shift || '';
+    my $filename = shift || basename( $file );
+
+    return from_json(
+        $self->_talk(
+            'files/'.$self->context.'/'.$path,
+            'POST',
+            { file => [ $file ] },
+            $filename
+        )
+    );
+
+}
+
+
 =head1 INTERNAL API
 
 =head2 _talk
@@ -263,12 +288,15 @@ normally not need to access this directly.
 =cut
 
 sub _talk {
-    my $self = shift;
+    my $self    = shift;
     my $command = shift;
-    my $method = shift || 'GET';
+    my $method  = shift || 'GET';
+    my $content = shift;
+    my $filename= shift;
 
     my $ua = LWP::UserAgent->new;
-    my $request = Net::OAuth->request("protected resource")->new(
+
+    my %opts = (
         consumer_key => $self->key,
         consumer_secret => $self->secret,
         request_url => 'http://api.dropbox.com/0/'.$command,
@@ -280,6 +308,12 @@ sub _talk {
         token => $self->access_token,
         token_secret => $self->access_secret,
     );
+    if($filename) {
+        $opts{extra_params}{file} = $filename;
+        $opts{request_url} = 'http://api-content.dropbox.com/0/'.$command;
+    }
+
+    my $request = Net::OAuth->request("protected resource")->new( %opts );
 
     $request->sign;
 
@@ -287,7 +321,7 @@ sub _talk {
     if($method =~ /get/i){
         $res = $ua->get($request->to_url);
     } else {
-        $res = $ua->post($request->to_url);
+        $res = $ua->post($request->to_url, Content_Type => 'form-data', Content => $content );
     }
 
     if ($res->is_success) {
