@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+0.9     2010-10-18T10:34:38
+        merged in changes from http://github.com/b10m (putfile method)
+
 0.7     2010-09-30T11:27:03
         fixed the SYNOPSIS (thanks to s.aska.org)
 
