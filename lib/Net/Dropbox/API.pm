@@ -46,7 +46,6 @@ has 'debug' => (is => 'rw', isa => 'Bool', default => 0);
 has 'error' => (is => 'rw', isa => 'Str', predicate => 'has_error');
 has 'key' => (is => 'rw', isa => 'Str');
 has 'secret' => (is => 'rw', isa => 'Str');
-has 'nonce' => (is => 'ro', isa => 'Str', default => sub { join( '', rand_chars( size => 16, set => 'alphanumeric' )); } );
 has 'login_link' => (is => 'rw', isa => 'Str');
 has 'callback_url' => (is => 'rw', isa => 'Str', default => 'http://localhost:3000/callback');
 has 'request_token' => (is => 'rw', isa => 'Str');
@@ -54,6 +53,7 @@ has 'request_secret' => (is => 'rw', isa => 'Str');
 has 'access_token' => (is => 'rw', isa => 'Str');
 has 'access_secret' => (is => 'rw', isa => 'Str');
 has 'context' => (is => 'rw', isa => 'Str', default => 'sandbox');
+sub nonce { join( '', rand_chars( size => 16, set => 'alphanumeric' )); }
 
 =head2 login
 
