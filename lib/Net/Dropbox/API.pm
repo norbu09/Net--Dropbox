@@ -15,11 +15,11 @@ Net::Dropbox::API - A dropbox API interface
 
 =head1 VERSION
 
-Version 0.9.8
+Version 0.10.10.9.8
 
 =cut
 
-our $VERSION = '0.9';
+our $VERSION = '0.10';
 
 
 =head1 SYNOPSIS
@@ -53,7 +53,7 @@ has 'request_secret' => (is => 'rw', isa => 'Str');
 has 'access_token' => (is => 'rw', isa => 'Str');
 has 'access_secret' => (is => 'rw', isa => 'Str');
 has 'context' => (is => 'rw', isa => 'Str', default => 'sandbox');
-sub nonce { join( '', rand_chars( size => 16, set => 'alphanumeric' )); }
+
 
 =head2 login
 
@@ -286,6 +286,14 @@ _talk handles the access to the restricted resources. You should
 normally not need to access this directly.
 
 =cut
+
+=head2 nonce
+
+Generate a different nonce for every request.
+
+=cut
+
+sub nonce { join( '', rand_chars( size => 16, set => 'alphanumeric' )); }
 
 sub _talk {
     my $self    = shift;

@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+0.10    2011-02-05T08:40:29
+        Turn the attribute "nonce" into a function (Greg Knauss)
+
 0.9     2010-10-18T10:34:38
         merged in changes from http://github.com/b10m (putfile method)
 
