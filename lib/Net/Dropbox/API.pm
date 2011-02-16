@@ -309,8 +309,9 @@ sub _talk {
         token_secret => $self->access_secret,
     );
     if($filename) {
-        $opts{extra_params}{file} = $filename;
-        $opts{request_url} = 'http://api-content.dropbox.com/0/'.$command;
+        push @{$content->{file}},$filename;
+        $opts{request_url} = "http://api-content.dropbox.com/0/$command/?".
+            "file=$filename";
     }
 
     my $request = Net::OAuth->request("protected resource")->new( %opts );
