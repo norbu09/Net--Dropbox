@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+1.0     2011-02-21T09:17:40
+        Allow putfile() to properly specify a new target filename on (Greg Knauss)
+
 0.10    2011-02-05T08:40:29
         Turn the attribute "nonce" into a function (Greg Knauss)
 
