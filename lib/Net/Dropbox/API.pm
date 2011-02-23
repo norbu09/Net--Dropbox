@@ -277,6 +277,19 @@ sub putfile {
 
 }
 
+=head2 getfile
+
+get a file from dropbox
+
+=cut
+
+sub getfile {
+    my $self = shift;
+    my $path = shift || '';
+
+    return $self->_talk('files/'.$self->context.'/'.$path, undef, undef, undef, 'api-content');
+}
+
 
 =head1 INTERNAL API
 
@@ -301,13 +314,14 @@ sub _talk {
     my $method  = shift || 'GET';
     my $content = shift;
     my $filename= shift;
+    my $api     = shift || 'api';
 
     my $ua = LWP::UserAgent->new;
 
     my %opts = (
         consumer_key => $self->key,
         consumer_secret => $self->secret,
-        request_url => 'http://api.dropbox.com/0/'.$command,
+        request_url => 'http://'.$api.'.dropbox.com/0/'.$command,
         request_method => $method,
         signature_method => 'HMAC-SHA1',
         timestamp => time,
