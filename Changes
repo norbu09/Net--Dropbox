@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+1.1     2011-02-23T16:49:30
+        file download api support (s-aska)
+
 1.0     2011-02-21T09:17:40
         Allow putfile() to properly specify a new target filename on (Greg Knauss)
 

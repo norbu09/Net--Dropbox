@@ -15,11 +15,11 @@ Net::Dropbox::API - A dropbox API interface
 
 =head1 VERSION
 
-Version 1.0.0.10.10.9.8
+Version 1.1.0
 
 =cut
 
-our $VERSION = '1.0';
+our $VERSION = '1.1';
 
 
 =head1 SYNOPSIS
@@ -371,8 +371,12 @@ sub _talk {
 Lenz Gschwendtner, C<< <norbu09 at cpan.org> >>
 
 With Bug fixes from:
+
 Greg Knauss C<< gknauss at eod.com >>
+
 Chris Prather C<< chris at prather.org >>
+
+Shinichiro Aska
 
 =head1 BUGS
 
