@@ -286,8 +286,9 @@ get a file from dropbox
 sub getfile {
     my $self = shift;
     my $path = shift || '';
+    my $file = shift || '';
 
-    return $self->_talk('files/'.$self->context.'/'.$path, undef, undef, undef, 'api-content');
+    return $self->_talk('files/'.$self->context.'/'.$path, undef, undef, undef, 'api-content', $file);
 }
 
 
@@ -315,6 +316,7 @@ sub _talk {
     my $content = shift;
     my $filename= shift;
     my $api     = shift || 'api';
+    my $content_file = shift;
 
     my $ua = LWP::UserAgent->new;
 
@@ -341,7 +343,9 @@ sub _talk {
     $request->sign;
 
     my $res;
-    if($method =~ /get/i){
+    if($content_file) {
+        $res = $ua->get($request->to_url, ':content_file' => $content_file);
+    } elsif($method =~ /get/i){
         $res = $ua->get($request->to_url);
     } else {
         $res = $ua->post($request->to_url, Content_Type => 'form-data', Content => $content );
