@@ -8,6 +8,7 @@ use Net::OAuth;
 use LWP::UserAgent;
 use HTTP::Request::Common;
 use Data::Random qw(rand_chars);
+use Encode;
 
 =head1 NAME
 
@@ -177,8 +178,10 @@ sub copy {
     my $self = shift;
     my ($from, $to) = @_;
 
-    my $opts = 'from_path='.$from.'&to_path='.$to.'&root='.$self->context;
-    return from_json($self->_talk('fileops/copy?'.$opts));
+    my $opts = 'root='.$self->context;
+    return from_json($self->_talk('fileops/copy?'.$opts,
+                    undef, undef, undef, undef, undef,
+                    { from_path => $from, to_path => $to }));
 }
 
 =head2 move
@@ -192,8 +195,10 @@ sub move {
     my $self = shift;
     my ($from, $to) = @_;
 
-    my $opts = 'from_path='.$from.'&to_path='.$to.'&root='.$self->context;
-    return from_json($self->_talk('fileops/move?'.$opts));
+    my $opts = 'root='.$self->context;
+    return from_json($self->_talk('fileops/move?'.$opts,
+                    undef, undef, undef, undef, undef,
+                    { from_path => $from, to_path => $to }));
 }
 
 =head2 mkdir
@@ -207,8 +212,10 @@ sub mkdir {
     my $self = shift;
     my ($path) = @_;
 
-    my $opts = 'path='.$path.'&root='.$self->context;
-    return from_json($self->_talk('fileops/create_folder?'.$opts));
+    my $opts = 'root='.$self->context;
+    return from_json($self->_talk('fileops/create_folder?'.$opts,
+                    undef, undef, undef, undef, undef,
+                    { path => $path }));
 }
 
 =head2 delete
@@ -222,8 +229,10 @@ sub delete {
     my $self = shift;
     my ($path) = @_;
 
-    my $opts = 'path='.$path.'&root='.$self->context;
-    return from_json($self->_talk('fileops/delete?'.$opts));
+    my $opts = 'root='.$self->context;
+    return from_json($self->_talk('fileops/delete?'.$opts,
+                    undef, undef, undef, undef, undef,
+                    { path => $path }));
 }
 
 =head2 view
@@ -271,7 +280,10 @@ sub putfile {
             'files/'.$self->context.'/'.$path,
             'POST',
             { file => [ $file ] },
-            $filename
+            $filename, # can't decode_utf8
+            'api-content',
+            undef,
+            { file => decode_utf8($filename) }
         )
     );
 
@@ -317,6 +329,7 @@ sub _talk {
     my $filename= shift;
     my $api     = shift || 'api';
     my $content_file = shift;
+    my $extra_params = shift;
 
     my $ua = LWP::UserAgent->new;
 
@@ -331,11 +344,10 @@ sub _talk {
         #callback => $self->callback_url,
         token => $self->access_token,
         token_secret => $self->access_secret,
+        extra_params => $extra_params
     );
     if($filename) {
         push @{$content->{file}},$filename;
-        $opts{request_url} = "http://api-content.dropbox.com/0/$command/?".
-            "file=$filename";
     }
 
     my $request = Net::OAuth->request("protected resource")->new( %opts );
