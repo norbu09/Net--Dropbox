@@ -16,11 +16,11 @@ Net::Dropbox::API - A dropbox API interface
 
 =head1 VERSION
 
-Version 1.1.0
+Version 1.2.1
 
 =cut
 
-our $VERSION = '1.1';
+our $VERSION = '1.2';
 
 
 =head1 SYNOPSIS

@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+1.2     2011-03-24T08:58:10
+        fix utf8 copy, move, delete, mkdir, putfile (s-aska)
+
 1.1     2011-02-23T16:49:30
         file download api support (s-aska)
 
