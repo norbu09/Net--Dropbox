@@ -82,6 +82,7 @@ sub login {
         timestamp => time,
         nonce => $self->nonce,
         callback => $self->callback_url,
+        callback_confirmed => ($self->callback_url ? 'true' : undef)
     );
 
     $request->sign;
