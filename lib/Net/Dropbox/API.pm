@@ -93,7 +93,7 @@ sub login {
         $self->request_secret($response->token_secret);
         print "Got Request Token ", $response->token, "\n" if $self->debug;
         print "Got Request Token Secret ", $response->token_secret, "\n" if $self->debug;
-        return 'http://api.dropbox.com/0/oauth/authorize?oauth_token='.$response->token.'&oauth_callback='.$self->callback_url;
+        return 'https://www.dropbox.com/0/oauth/authorize?oauth_token='.$response->token.'&oauth_callback='.$self->callback_url;
     }
     else {
         $self->error($res->status_line);
