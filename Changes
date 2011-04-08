@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+1.3     2011-04-08T16:52:14
+        Dropbox Changed the authorized url (s-aska)
+
 1.2     2011-03-24T08:58:10
         fix utf8 copy, move, delete, mkdir, putfile (s-aska)
 
