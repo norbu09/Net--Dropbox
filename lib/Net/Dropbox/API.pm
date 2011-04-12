@@ -16,7 +16,7 @@ Net::Dropbox::API - A dropbox API interface
 
 =head1 VERSION
 
-Version 1.3.2.1
+Version 1.3
 
 =cut
 
