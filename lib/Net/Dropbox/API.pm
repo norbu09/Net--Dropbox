@@ -32,7 +32,7 @@ This is how it works:
     use Net::Dropbox::API;
 
     my $box = Net::Dropbox::API->new({key => 'KEY', secret => 'SECRET'});
-    my $login_link = $box->login;  # user needs to klick this link and login
+    my $login_link = $box->login;  # user needs to click this link and login
     $box->auth;                    # oauth keys get exchanged
     my $info = $box->account_info; # and here we have our account info
 
@@ -59,7 +59,7 @@ has 'context' => (is => 'rw', isa => 'Str', default => 'sandbox');
 =head2 login
 
 This sets up the initial OAuth handshake and returns the login URL. This
-URL has to be clicked by the user and the the user then has to accept
+URL has to be clicked by the user and the user then has to accept
 the application in dropbox. 
 
 Dropbox then redirects back to the callback URL defined with

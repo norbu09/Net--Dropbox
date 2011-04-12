@@ -11,7 +11,7 @@ it works:
    use Net::Dropbox::API;
 
    my $box = Net::Dropbox::API->new({key => 'KEY', secret => 'SECRET'});
-   my $login_link = $box->login; # user needs to klick this link and login
+   my $login_link = $box->login; # user needs to click this link and login
    $box->auth;                   # oauth keys get exchanged
    my $info = $box->info;        # and here we have our account info
 
