@@ -78,7 +78,7 @@ sub login {
     my $request = Net::OAuth->request("request token")->new(
         consumer_key => $self->key,
         consumer_secret => $self->secret,
-        request_url => 'http://api.dropbox.com/0/oauth/request_token',
+        request_url => 'https://api.dropbox.com/0/oauth/request_token',
         request_method => 'POST',
         signature_method => 'HMAC-SHA1',
         timestamp => time,
@@ -119,7 +119,7 @@ sub auth {
     my $request = Net::OAuth->request("access token")->new(
         consumer_key => $self->key,
         consumer_secret => $self->secret,
-        request_url => 'http://api.dropbox.com/0/oauth/access_token',
+        request_url => 'https://api.dropbox.com/0/oauth/access_token',
         request_method => 'POST',
         signature_method => 'HMAC-SHA1',
         timestamp => time,
@@ -346,7 +346,7 @@ sub _talk {
     my %opts = (
         consumer_key => $self->key,
         consumer_secret => $self->secret,
-        request_url => 'http://'.$api.'.dropbox.com/0/'.$command,
+        request_url => 'https://'.$api.'.dropbox.com/0/'.$command,
         request_method => $method,
         signature_method => 'HMAC-SHA1',
         timestamp => time,
