@@ -1,5 +1,11 @@
 Revision history for Net-Dropbox
 
+1.4     2011-04-13T07:42:26
+        patches by (ktdreyer)
+        1) Supplement documentation
+        2) Use HTTPS everywhere
+        3) Link to GitHub in CPAN metadata
+
 1.3     2011-04-08T16:52:14
         Dropbox Changed the authorized url (s-aska)
 

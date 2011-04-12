@@ -16,11 +16,11 @@ Net::Dropbox::API - A dropbox API interface
 
 =head1 VERSION
 
-Version 1.3
+Version 1.4.3
 
 =cut
 
-our $VERSION = '1.3';
+our $VERSION = '1.4';
 
 
 =head1 SYNOPSIS
@@ -396,10 +396,12 @@ Chris Prather C<< chris at prather.org >>
 
 Shinichiro Aska
 
+[ktdreyer]
+
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-net-dropbox-api at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Net-Dropbox-API>.  I will be notified, and then you'll
+Please report any bugs through the web interface at
+L<https://github.com/norbu09/Net--Dropbox/issues>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 =head1 SUPPORT
@@ -411,10 +413,6 @@ You can find documentation for this module with the perldoc command.
 You can also look for information at:
 
 =over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Net-Dropbox-API>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
