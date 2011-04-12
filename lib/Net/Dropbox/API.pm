@@ -39,6 +39,8 @@ This is how it works:
 See the examples for a working Mojolicious web client using the Dropbox
 API.
 
+You can find Dropbox's API documentation at L<https://www.dropbox.com/developers/web_docs>
+
 =head1 FUNCTIONS
 
 =cut
