@@ -17,5 +17,7 @@ requires 'Data::Random';
 
 auto_install;
 
+repository 'https://github.com/norbu09/Net--Dropbox';
+
 WriteAll;
 
