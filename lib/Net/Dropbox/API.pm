@@ -375,10 +375,6 @@ sub _talk {
     return;
 }
 
-=head2 talk
-
-=cut
-
 =head1 AUTHOR
 
 Lenz Gschwendtner, C<< <norbu09 at cpan.org> >>
