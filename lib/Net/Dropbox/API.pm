@@ -296,6 +296,13 @@ get a file from dropbox
 
 =cut
 
+=head2 debug
+
+Set this to a non-false value in order to print some debugging information to STDOUT.
+    debug(1)
+
+=cut
+
 sub getfile {
     my $self = shift;
     my $path = shift || '';
