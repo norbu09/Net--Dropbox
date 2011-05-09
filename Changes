@@ -1,5 +1,10 @@
 Revision history for Net-Dropbox
 
+1.5     2011-05-09T19:47:59
+        list() now accepts an optional 'hash' value to implement
+        if-modified-since to verify if dropbox data has changed since
+        the last call. (mschilli)
+
 1.4     2011-04-13T07:42:26
         patches by (ktdreyer)
         1) Supplement documentation
