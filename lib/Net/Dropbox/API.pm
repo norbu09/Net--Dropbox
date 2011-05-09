@@ -6,6 +6,8 @@ use JSON;
 use Mouse;
 use Net::OAuth;
 use LWP::UserAgent;
+use URI;
+use HTTP::Status qw(:constants);
 use HTTP::Request::Common;
 use Data::Random qw(rand_chars);
 use Encode;
@@ -159,15 +161,64 @@ sub account_info {
 
 =head2 list
 
-lists all files in the path defined.
+lists all files in the path defined:
+
+    $data = $box->list();           # top-level
+    $data = $box->list( "/Photos" ); # folder
+
+The data returned is a ref to a hash containing various fields returned
+by Dropbox, including a C<hash> value, which can be used later to check
+if Dropbox data beneath a specified folder has changed since the last call.
+
+For this, C<list()> accepts an optional 'hash' argument:
+
+    $data = $box->list({ hash => "ce9ccbfb8f255f234c93adcfef33b5a6" },
+                       "/Photos");
+
+This will either return
+
+    { http_response_code => 304 }
+
+in which case nothing has changed since the last call, or 
+
+    { http_response_code => 200,
+      # ... various other fields
+    }
+
+if there were modifications.
 
 =cut
 
 sub list {
     my $self = shift;
+    my $opts = {};
+    if(defined $_[0]  and ref($_[0]) eq "HASH") {
+          # optional option hash present
+        $opts = shift;
+    }
     my $path = shift || '';
 
-    return from_json($self->_talk('files/'.$self->context.'/'.$path));
+    my $uri = URI->new('files/'.$self->context.$path);
+    $uri->query_form($opts) if scalar keys %$opts;
+
+    my $talk_opts = {};
+
+    if(exists $opts->{hash}) {
+       $talk_opts = {
+           error_handler => sub {
+               my $obj   = shift;
+               my $resp  = shift;
+               if( $resp->code == HTTP_NOT_MODIFIED ) {
+                   return to_json({ http_response_code => 
+                                    HTTP_NOT_MODIFIED });
+               } else {
+                   return $self->_talk_default_error_handler($resp);
+               }
+           },
+       };
+    }
+
+    return from_json($self->_talk($talk_opts, $uri->as_string));
 }
 
 =head2 copy
@@ -333,6 +384,11 @@ sub nonce { join( '', rand_chars( size => 16, set => 'alphanumeric' )); }
 
 sub _talk {
     my $self    = shift;
+    my $opts    = {};
+    if(defined $_[0]  and ref($_[0]) eq "HASH") {
+          # optional option hash present
+        $opts = shift;
+    }
     my $command = shift;
     my $method  = shift || 'GET';
     my $content = shift;
@@ -340,6 +396,10 @@ sub _talk {
     my $api     = shift || 'api';
     my $content_file = shift;
     my $extra_params = shift;
+
+    if( !defined $opts->{error_handler} ) {
+        $opts->{error_handler} = \&_talk_default_error_handler;
+    }
 
     my $ua = LWP::UserAgent->new;
 
@@ -375,13 +435,32 @@ sub _talk {
 
     if ($res->is_success) {
         print "Got Content ", $res->content, "\n" if $self->debug;
-        return $res->content;
-    }
-    else {
+        my $data;
+        eval {
+            $data = from_json($res->content);
+        };
+        if($@) {
+            # got invalid json from server
+            return to_json({ error => "Invalid JSON server response",
+                             http_response_code => $res->code(),
+                           });
+        }
+        $data->{http_response_code} = $res->code();
+        return to_json($data);
+    } else {
         $self->error($res->status_line);
-        warn "Something went wrong: ".$res->status_line;
+        return $opts->{error_handler}->($self, $res);
     }
     return;
+}
+
+sub _talk_default_error_handler {
+    my $self    = shift;
+    my $res     = shift;
+
+    warn "Something went wrong: ".$res->status_line;
+    return to_json({error => $res->status_line,
+                    http_response_code => $res->code});
 }
 
 =head1 AUTHOR
