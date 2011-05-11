@@ -197,6 +197,7 @@ sub list {
         $opts = shift;
     }
     my $path = shift || '';
+    $path = '/' . $path if length $path && substr($path, 0, 1) ne '/';
 
     my $uri = URI->new('files/'.$self->context.$path);
     $uri->query_form($opts) if scalar keys %$opts;
