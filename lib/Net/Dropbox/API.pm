@@ -442,10 +442,8 @@ sub _talk {
             $data = from_json($res->content);
         };
         if($@) {
-            # got invalid json from server
-            return to_json({ error => "Invalid JSON server response",
-                             http_response_code => $res->code(),
-                           });
+            # this doesn't look like JSON, might be file content
+            return $res->content;
         }
         $data->{http_response_code} = $res->code();
         return to_json($data);
