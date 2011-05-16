@@ -196,7 +196,9 @@ sub list {
           # optional option hash present
         $opts = shift;
     }
-    my $path = shift || '';
+    my $path = shift;
+    $path = '' unless defined $path;
+    $path = '/'.$path if $path=~m|^[^/]|;
 
     my $uri = URI->new('files/'.$self->context.$path);
     $uri->query_form($opts) if scalar keys %$opts;
