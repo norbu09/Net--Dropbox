@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+1.6.1   2011-06-16T13:16:50
+        fixes #16
+
 1.6     2011-05-16T17:44:07
         bugfix release with patches from mschilli and s-aska
 
