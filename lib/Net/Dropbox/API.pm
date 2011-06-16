@@ -7,7 +7,6 @@ use Mouse;
 use Net::OAuth;
 use LWP::UserAgent;
 use URI;
-use HTTP::Status qw(:constants);
 use HTTP::Request::Common;
 use Data::Random qw(rand_chars);
 use Encode;
@@ -210,9 +209,10 @@ sub list {
            error_handler => sub {
                my $obj   = shift;
                my $resp  = shift;
-               if( $resp->code == HTTP_NOT_MODIFIED ) {
-                   return to_json({ http_response_code => 
-                                    HTTP_NOT_MODIFIED });
+               # HTTP::Status is nice but old RHEL5 has issues with it
+               # so we use plain codes
+               if( $resp->code == 304 ) {
+                   return to_json({ http_response_code => 304 });
                } else {
                    return $self->_talk_default_error_handler($resp);
                }
