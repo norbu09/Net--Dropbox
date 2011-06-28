@@ -1,5 +1,9 @@
 Revision history for Net-Dropbox
 
+1.7     2011-06-28T12:21:36
+        fixed missing requires in Makefile (fixes CPAN Testers reported
+        bug)
+
 1.6.1   2011-06-16T13:16:50
         fixes #16
 

@@ -7,13 +7,16 @@ license  'perl';
 
 build_requires 'Test::More';
 
+requires 'URI';
 requires 'JSON';
 requires 'Mouse';
+requires 'Encode';
 requires 'Net::OAuth';
+requires 'Data::Random';
 requires 'common::sense';
+requires 'File::Basename';
 requires 'LWP::UserAgent';
 requires 'HTTP::Request::Common';
-requires 'Data::Random';
 
 auto_install;
 
