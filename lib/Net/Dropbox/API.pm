@@ -409,7 +409,7 @@ sub _talk {
     my %opts = (
         consumer_key => $self->key,
         consumer_secret => $self->secret,
-        request_url => 'https://'.$api.'.dropbox.com/0/'.$command,
+        request_url => 'https://'.$api.'.dropbox.com/1/'.$command,
         request_method => $method,
         signature_method => 'HMAC-SHA1',
         timestamp => time,
