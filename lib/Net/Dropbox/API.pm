@@ -9,7 +9,6 @@ use LWP::UserAgent;
 use URI;
 use HTTP::Request::Common;
 use Data::Random qw(rand_chars);
-use Data::Dumper;
 use Encode;
 
 =head1 NAME
@@ -18,7 +17,7 @@ Net::Dropbox::API - A dropbox API interface
 
 =head1 VERSION
 
-Version 1.8
+Version 1.8.8.8
 
 =cut
 
@@ -102,7 +101,7 @@ sub login {
     }
     else {
         $self->error($res->status_line);
-        warn "Something went wrong: ". Dumper $res;
+        warn "Something went wrong: " . $res->status_line;
     }
 }
 
@@ -479,7 +478,7 @@ Shinichiro Aska
 
 [ktdreyer]
 
-SureVoIP for updating to v1 API - L<http://www.surevoip.co.uk>
+SureVoIP L<http://www.surevoip.co.uk>
 
 =head1 BUGS
 

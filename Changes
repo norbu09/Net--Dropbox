@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+1.8     2012-03-23T12:47:13
+        Thanks to SureVoIP for updating to v1 API
+
 1.7     2011-06-28T12:21:36
         fixed missing requires in Makefile (fixes CPAN Testers reported
         bug)
