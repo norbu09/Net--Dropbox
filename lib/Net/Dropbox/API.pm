@@ -426,6 +426,7 @@ sub _talk {
     my $request = Net::OAuth->request("protected resource")->new( %opts );
 
     $request->sign;
+    print "_talk URL: ", $request->to_url, "\n" if $self->debug;
 
     my $res;
     if($content_file) {
