@@ -1,5 +1,8 @@
 Revision history for Net-Dropbox
 
+1.9     2012-10-23T20:26:55
+        updated Module::Install
+
 1.8     2012-03-23T12:47:13
         Thanks to SureVoIP for updating to v1 API
 
